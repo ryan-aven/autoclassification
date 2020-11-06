@@ -58,7 +58,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 vectorizer = CountVectorizer(max_features=1500, min_df=4, max_df=.7, stop_words=stopwords.words('english'))
 x = vectorizer.fit_transform(documents).toarray()
 
-#reweighting based on tdif values
+#reweighting based on td-idf values
 from sklearn.feature_extraction.text import TfidfTransformer
 tfidfconverter = TfidfTransformer()
 x = tfidfconverter.fit_transform(x).toarray()
