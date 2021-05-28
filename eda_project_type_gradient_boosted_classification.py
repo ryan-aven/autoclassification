@@ -26,13 +26,9 @@ from nltk.corpus import stopwords
 nltk.download('wordnet')
 nltk.download('stopwords')
 
-documents = []
-
-stemmer = WordNetLemmatizer()
-
-for sen in range(0, len(x)):
+def preprocess(document):
     # Remove all the special characters
-    document = re.sub(r'\W', ' ', str(x[sen]))
+    document = re.sub(r'\W', ' ', str(document))
     
     # remove all single characters
     document = re.sub(r'\s+[a-zA-Z]\s+', ' ', document)
@@ -49,13 +45,17 @@ for sen in range(0, len(x)):
     # Converting to Lowercase
     document = document.lower()
     
-    # Lemmatization
-    document = document.split()
+    #tokenizing
+    tokenizer = RegexpTokenizer(r'\w+')
+    document = tokenizer.tokenize(document)  
+    document = [w for w in document if len(w) > 2 if not w in stopwords.words('english')]
 
-    document = [stemmer.lemmatize(word) for word in document]
-    document = ' '.join(document)
+    # Lemmatization
+    document = [lemmatizer.lemmatize(word) for word in document]
+    return " ".join(document)
+
+df['Project_Description']=df['Project_Description'].map(lambda s:preprocess(s)) 
     
-    documents.append(document)
 print("special characters removed, lemmatization complete")
 
 #converting text to numbers
